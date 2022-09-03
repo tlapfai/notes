@@ -27,7 +27,15 @@ pointers相當於arrays的iterators，當我們把deference運算子和increment
 **引用實際上是指針常量**
 
 int& 即是 int* const，指針常量是不可改指向，所以引用也是不能更改的
+指針常量是一個指針，但不可另指新位址
 
+    int a = 10;
+    int& aRef = a;
+    // 相當於
+    // int* const aRef = &a; //指針常量，不可另指
+    aRef = 20;
+    // 相當於
+    // *aRef = 20;
 
     
 **Reference as a return**
@@ -46,3 +54,10 @@ Invoking function can be a left-value.
         
         return 0;
     }
+    
+初始化引用的其中一個方法
+
+    const int& ref = 10;
+    // int temp = 10; 
+    // const int& ref = temp;
+    // 不可修改變量 ref = 20;會發生錯誤
