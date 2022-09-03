@@ -9,6 +9,17 @@ pointers相當於arrays的iterators，當我們把deference運算子和increment
 
     string s("hello world");
     string *sp = &s;  // sp = address-of s
+    
+
+**Pointer and Constant**
+
+Read it backwards:
+
+    int* // pointer to int
+    int const * // pointer to const int
+    int * const // const pointer to int
+    int const * const // const pointer to const int
+
 
 **Call by pointer**
 
