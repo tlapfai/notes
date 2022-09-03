@@ -23,6 +23,13 @@ pointers相當於arrays的iterators，當我們把deference運算子和increment
     
     swap(&a, &b);
     
+
+**引用實際上是指針常量**
+
+int& 即是 int* const，指針常量是不可改指向，所以引用也是不能更改的
+
+
+    
 **Reference as a return**
 
 Invoking function can be a left-value.
