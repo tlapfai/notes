@@ -23,3 +23,19 @@ pointers相當於arrays的iterators，當我們把deference運算子和increment
     
     swap(&a, &b);
     
+**Reference as a return**
+
+Invoking function can be a left-value.
+
+    int& test() {
+        static int a = 10;  // saved in global memory
+        return a;
+    }
+    
+    int main() {
+        int &ref = test();
+        cout << "ref = " << ref << endl;  // ref = 10
+        test() = 20;  // can be as a left-value, test() returns a reference of a
+        
+        return 0;
+    }
