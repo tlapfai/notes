@@ -72,3 +72,12 @@ Invoking function can be a left-value.
     // int temp = 10; 
     // const int& ref = temp;
     // 不可修改變量 ref = 20;會發生錯誤
+    
+
+non-static methods do not belong to object
+only non-static attributes belong to object
+
+Size of blank object (contains no attributes) is 1 byte.
+
+this pointers are implicitly embedded
+
