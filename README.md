@@ -81,3 +81,4 @@ Size of blank object (contains no attributes) is 1 byte.
 
 this pointers are implicitly embedded
 
+https://blog.csdn.net/Augenstern_QXL/article/details/117249021
