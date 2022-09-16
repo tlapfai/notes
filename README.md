@@ -15,11 +15,12 @@ pointers相當於arrays的iterators，當我們把deference運算子和increment
 
 Read it backwards:
 
-    int* // pointer to int
-    int const * // pointer to const int
-    int * const // const pointer to int
-    int const * const // const pointer to const int
+    int * ptr; // pointer to int
+    const int * ptr; // pointer to const int, allowed to redirect ptr, but the content (const int) cannot be modified
+    int * const ptr; // const pointer to int, not allowed to redirect ptr
+    const int * const ptr; // const pointer to const int
 
+*const* beside ptr is to modify the constancy of the pointer
 
 **Call by pointer**
 
@@ -77,8 +78,19 @@ Invoking function can be a left-value.
 non-static methods do not belong to object
 only non-static attributes belong to object
 
-Size of blank object (contains no attributes) is 1 byte.
+Size of blank object (contains no attributes) is 1 byte, because every object have to own 
 
-this pointers are implicitly embedded
+*this* pointers are implicitly embedded
+
+**Class method with const**
+
+    class Person {
+        void getAge() const {} // this const makes the member variables can not amended by getAge
+    }
+    
+
+Static variable is a property of a Class rather than the instance of class. It represent a kind of a global value for all the instances of that class and can able to call them using class name.
+
+https://stackoverflow.com/questions/177437/what-does-const-static-mean-in-c-and-c
 
 https://blog.csdn.net/Augenstern_QXL/article/details/117249021
