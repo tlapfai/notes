@@ -13,6 +13,8 @@ pointers相當於arrays的iterators，當我們把deference運算子和increment
 
 **Pointer and Constant**
 
+對於pointer來說，指向const int和指向int是兩種不同的指針，不能互相賦值
+
 Read it backwards:
 
     int * ptr; // pointer to int
@@ -20,7 +22,7 @@ Read it backwards:
     int * const ptr; // const pointer to int, not allowed to redirect ptr
     const int * const ptr; // const pointer to const int
 
-*const* beside ptr is to modify the constancy of the pointer
+*const* beside ptr is to modify the constancy of the pointer, we must initalize the pointer in its definition
 
 **Call by pointer**
 
