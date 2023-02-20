@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function loadTextFile() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "file.txt", true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            var lines = xhr.responseText.split("\n");
+            var linesToDisplay = lines.slice(Math.max(lines.length - 10, 0));
+            document.getElementById("text-area").innerHTML = linesToDisplay.join("\n");
+          }
+        };
+        xhr.send();
+      }
+      setInterval(loadTextFile, 60000);
+    </script>
+  </head>
+  <body onload="loadTextFile()">
+    <div id="text-area"></div>
+  </body>
+</html>
