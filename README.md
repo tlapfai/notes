@@ -1,5 +1,3 @@
-https://bloomberg.zoom.us/j/94607796196?pwd=aU5vanNDby9iUDVLZEJCNkpVdTZEZz09
-
 **C++**
 
 Arrays 不允許複製或賦值
