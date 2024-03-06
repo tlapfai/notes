@@ -173,6 +173,7 @@ x=execute
 
     chmod g-r file.txt // 移除 group(g)的權限
     chmod g+r,o+w file.txt // 注意：逗號後沒有空格
+    chmod u=rwx,g=,o=r file.txt // 等號後為空，沒有任何權限
     chmod ugo+rwx file.txt // 注意：ugo 順序固定
     chmod a+rwx file.txt // a代表全部人員
     chmod u=w file.txt // 重設 user 權限，然後設成只有w (set to w)
