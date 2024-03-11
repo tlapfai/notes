@@ -150,7 +150,7 @@ diff -y file1.txt file2.txt // compare files
 
     uniq -i // 移除重覆，-i 不分大小寫
 
-用 pipe 把資料傳入，例 sort ... | uniq -i
+用 pipe 把資料傳入，例 ```sort ... | uniq -i```
 
 # Permission
 
@@ -209,7 +209,7 @@ umask is a Linux command that lets you set up default permissions for newly crea
 |        | rw- | r-- | r-- |
 
 把新增的檔案設成反向後的權限
-例：touch file.txt，權限即為 rw- r-- r--  
+例：```touch file.txt```，權限即為 rw- r-- r--  
 因為它不是執行檔，所以自動略過 x
 
 ## Disk
@@ -230,3 +230,39 @@ umask is a Linux command that lets you set up default permissions for newly crea
 
     kill {process-id} // 關閉 process，發出SIGTERM
     kill -9 {process-id} // 強制關閉 process -9，發出SIGTKILL
+
+
+# alias
+
+設定別名，只對現時的session有效
+
+
+    alias list='ls -alh' // 用alias代表'ls -alh'
+
+
+取消alias
+
+    unalias list
+
+~/.bash_profile
+
+當登入時會執行一次這個檔案的指令
+
+在~/.bash_profile最底加入```alias list='ls -alh'```，即可每次登入都執行一次
+
+# history及fc -l
+
+Print out command history
+
+    $ history | tail -20  // 印出最後20列的歷史指令
+
+    $ fc -l
+    655      kill -9 135359
+    656      ps -u lftam2
+    657      ps -l -u lftam2
+    658      jobs
+    659      ps -l -u lftam2
+    $ !658 // 執行代號為658的歷史指令
+
+
+指令儲存在~/.bash_history
