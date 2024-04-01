@@ -63,23 +63,39 @@ Result: WHAT -bash means not running any program
 
 檔名要符合 regular expression
 
-    find {path} - name "{file-name-to-be-find}"
-    find {path} - iname "{file-name-to-be-find}" // case insensitive
+    find 路徑 - name "{file-name-to-be-find}"
+    find 路徑 - iname "{file-name-to-be-find}" // case insensitive
 
 ## 印出在 CLI 或在檔案
 
-    echo "something I want to print"
-    echo "something I want to save" > file.txt // overwrite the whole file
-    echo "another thing I want to save" >> file.txt // append in the file bottom
-    2> // write error message if any
-    2>> // append error message if any
+```sh
+echo "something I want to print"
+echo "something I want to save" > file.txt // overwrite the whole file
+echo "another thing I want to save" >> file.txt // append in the file bottom
+```
 
+用 2>把錯誤訊息存到檔案  
+用 2>>把錯誤訊息附加到檔案底部
+
+```sh
 diff -y file1.txt file2.txt // compare files
+```
 
 ## grep
 
-    grep "mark" data.txt // 在 data.txt 尋找 mark，印出有該文字的行
-    //參數 -i 代表不分大小寫
+    grep "mark" data.txt
+    // 在 data.txt 尋找 mark，印出有該文字的行
+    // 參數 -i 代表不分大小寫
+    // quotes are optional when searching for a single word
+
+## cat
+
+印出檔案內容  
+-n 參數印出行號
+
+```sh
+cat data.txt
+```
 
 ## pipe
 
@@ -150,7 +166,7 @@ diff -y file1.txt file2.txt // compare files
 
     uniq -i // 移除重覆，-i 不分大小寫
 
-用 pipe 把資料傳入，例 ```sort ... | uniq -i```
+用 pipe 把資料傳入，例 `sort ... | uniq -i`
 
 # Permission
 
@@ -186,13 +202,17 @@ x=execute
 
 ## Octal Permission
 
-    chmod 754 file.txt
+```sh
+$ chmod 754 file.txt
+```
 
 r -> 4  
 w -> 2  
 x -> 1
 
-    chmod 17 file.txt // 考試要求寫齊3個數字，但 Linux 接受 1 個或 2 個數字
+```sh
+$ chmod 17 file.txt // 考試要求寫齊3個數字，但 Linux 接受 1 個或 2 個數字
+```
 
 ### umask (user file-creation mode)
 
@@ -200,7 +220,9 @@ umask is a Linux command that lets you set up default permissions for newly crea
 
 例：
 
-    umask 022
+```sh
+$ umask 022
+```
 
 | 十進制 | 0   | 2   | 2   |
 | ------ | --- | --- | --- |
@@ -209,15 +231,44 @@ umask is a Linux command that lets you set up default permissions for newly crea
 |        | rw- | r-- | r-- |
 
 把新增的檔案設成反向後的權限
-例：```touch file.txt```，權限即為 rw- r-- r--  
+例：`touch file.txt`，權限即為 rw- r-- r--  
 因為它不是執行檔，所以自動略過 x
 
 ## Disk
 
-    du // 顯示資料夾內的檔案大小 estimate file space usage
-    du -h // size represented in human readable format
+```sh
+$ du // 顯示資料夾內的檔案大小 estimate file space usage
+```
 
-    df // (disk free) report file system disk space usage
+例：
+
+```sh
+anthony@TAM_HOME:~/a$ du
+8       ./b
+8       ./@eaDir
+1556    .
+```
+
+用`-h`參數，可以顯示人類可讀的格式
+
+```sh
+$ du -h // size represented in human readable format
+```
+
+例：
+
+```sh
+anthony@TAM_HOME:~/a$ du -h
+8.0K    ./b
+8.0K    ./@eaDir
+1.6M    .
+```
+
+df (disk free) report file system disk space usage
+
+```sh
+$ df
+```
 
 ## 查看 process
 
@@ -231,38 +282,384 @@ umask is a Linux command that lets you set up default permissions for newly crea
     kill {process-id} // 關閉 process，發出SIGTERM
     kill -9 {process-id} // 強制關閉 process -9，發出SIGTKILL
 
-
 # alias
 
-設定別名，只對現時的session有效
+設定別名，只對現時的 session 有效
 
+```sh
+alias list='ls -alh' // 用alias代表'ls -alh'
+```
 
-    alias list='ls -alh' // 用alias代表'ls -alh'
+取消 alias
 
-
-取消alias
-
-    unalias list
+```sh
+unalias list
+```
 
 ~/.bash_profile
 
 當登入時會執行一次這個檔案的指令
 
-在~/.bash_profile最底加入```alias list='ls -alh'```，即可每次登入都執行一次
+在~/.bash_profile 最底加入`alias list='ls -alh'`，即可每次登入都執行一次
 
-# history及fc -l
+# history 及 fc -l
 
 Print out command history
 
-    $ history | tail -20  // 印出最後20列的歷史指令
+```sh
+$ history | tail -20  // 用 pipe 印出最後20列的歷史指令
 
-    $ fc -l
-    655      kill -9 135359
-    656      ps -u lftam2
-    657      ps -l -u lftam2
-    658      jobs
-    659      ps -l -u lftam2
-    $ !658 // 執行代號為658的歷史指令
-
+$ fc -l
+655      kill -9 135359
+656      ps -u lftam2
+657      ps -l -u lftam2
+658      jobs
+659      ps -l -u lftam2
+$ !658 // 執行代號為658的歷史指令
+jobs
+```
 
 指令儲存在~/.bash_history
+
+# Links
+
+## Hard Links
+
+- 只能對 file 有效，不能對 directory
+
+- `ln` stands for link
+
+```sh
+ln source_file destination_file
+```
+
+- 用`ls -li`查檔案的 inode  
+  參數`i`代表 inode
+
+`ls`結果顯示 source_file 和 destination_file 指向相同的 inode
+
+```sh
+$ ls -li
+total 0
+1234567 -rw-r--r-- 1 john users 0 Mar 11 16:59 destination_file
+1234567 -rw-r--r-- 1 john users 0 Mar 11 16:59 source_file  // 這兩個檔案的 inode 相同
+```
+
+`rm destination_file`不會刪除 source_file
+
+## Soft Links / Symbolic Links
+
+Soft link 用`ln -s`參數  
+與 Windows 捷徑相同  
+Soft link 可用於 directory  
+捷徑有自己的檔案位置和大小
+
+```sh
+$ ln -s file1 file2 // file2指向file1
+lrwxrwxrwx 1 john users  5 Mar 11 17:00 file2 -> file1  // 最頭的l代表link
+$ ln -s /root/file3 file4 // file4指向絕對路徑
+lrwxrwxrwx 1 john users  5 Mar 11 17:01 file4 -> /root/file3
+```
+
+# Script
+
+## 變數
+
+- Variable name is case sensitive
+- Variable name cannot start with number
+
+```sh
+$ school=Seneca  // assign Seneca to 變數school 不能有空格
+$ echo $school  // $代表是variable
+Seneca
+$ location="Greater Toronto Area"  // use quotes to include words with space in between
+$ price="This watch costs \$1000"
+$ echo "My school is $school"  // use $ to call variable
+My school is Seneca
+```
+
+- 用單引號不會顯示變數值
+
+```sh
+$ echo 'My school is $school'
+My school is $school
+```
+
+在~/.bash_profile 最底加入`$school=Seneca`，即可每次登入都執行一次
+
+通常用.sh 作為 script 的副檔名
+
+**`script.sh`:**
+
+```sh
+#!/bin/bash
+# This is a comment
+echo "Hello World"
+```
+
+- 第一行叫做 shebang line, to indicate the script is a bash script  
+  這行不一定要，但是加上可以確保 script 會用 bash 執行 (考試要求要加)  
+  usr/bin/bash is the location of bash  
+  在第二行開始用#，則是註解
+
+### 在執行前要先給予執行權限
+
+```sh
+$ chmod +x script.sh  // make the script executable
+$ ./script.sh  // run the script
+Hello world
+```
+
+```sh
+echo "Hello world"; echo "Hello world"  // 用分號連接兩個指令
+```
+
+## read
+
+- 用途：讓使用者輸入資料
+
+```sh
+read  # waiting for user's ENTER key
+read colour  # prompt user to input, and store the input in variable colour
+```
+
+- 變數在.sh 以外就會失效
+
+- `echo -n` 代表印出後不換行
+
+```sh
+echo -n "Enter your name: "
+# -n 代表不換行
+read name
+echo
+# echo 一行空白，即換行
+echo "Hello $name"
+```
+
+以上的程式碼會等待使用者輸入名字，然後印出 Hello \{name\}
+
+`echo -p` 會自動換行，`-p` 代表 prompt
+
+```sh
+read -p "Enter your name: " name
+# prompt user to input, and store the input in variable name (name前不用$)
+echo "Hello $name"
+```
+
+以上的程式碼會等待使用者輸入名字，然後印出 Hello \{name\}
+
+---
+
+## argument
+
+- 在運行.sh 後加入參數(arguments)，script 會把參數順序放入 script 內的變數，例：
+
+**`script.sh`:**
+
+```sh
+#!/bin/bash
+echo "My first argument is $1"
+echo "My second argument is $2"
+```
+
+試執行：
+
+```sh
+./script.sh John Peter
+```
+
+結果如下：
+
+```
+My first argument is John
+My second argument is Peter
+```
+
+- 可以用`{}`包住變數，注意$1和$10  
+如果直接用`$10`，會被解讀成`$1`後面接`0`，所以要用`${10}`來表示
+
+```sh
+#!/bin/bash
+echo "My first argument is $1"
+echo "My tenth argument is ${10}"
+```
+
+- `$#` 代表參數的數量
+
+```sh
+#!/bin/bash
+echo "The number of arguments is $#"
+```
+
+## if statement
+
+- 用`if`, `then`和`fi`來包住條件式
+- `[]` 內的兩側空格是必要的
+- `=` 旁的空格也是必要的
+- `else`和`elif`是可選的
+
+**`try_if.sh`:**
+
+```sh
+#!/bin/bash
+echo "The total number of arguments is $#"
+if [ $# = 1 ]
+then
+	echo "You have entered 1 argument"
+else
+	echo "You have entered $# arguments"
+fi
+```
+
+試執行：
+
+```sh
+./try_if.sh Peter Sam
+```
+
+結果如下：
+
+```sh
+The total number of arguments is 2
+You have entered 2 arguments
+```
+
+## 比較運算子
+
+- 有些 bash version 不支援`>`和`<`，所以要用`-gt`和`-lt`
+
+| 運算子 | 意義                  |
+| ------ | --------------------- |
+| -eq    | equal                 |
+| -ne    | not equal             |
+| -lt    | less than             |
+| -le    | less than or equal    |
+| -gt    | greater than          |
+| -ge    | greater than or equal |
+
+## Exit Code
+
+- 執行 bash script 或其他指令，會回傳一個數字，代表 script 的執行結果
+- 0 代表成功，其他數字代表失敗
+- Exit code 不是 error code，而是一個數字
+
+```sh
+#!/bin/bash
+echo -n "Is everything alright? (y/n) "
+read reponse
+if [ $response = "y" ]
+then
+	echo "Good to hear!"
+	exit 0
+else
+	echo "Something is wrong"
+	exit 1
+fi
+```
+
+- 在執行 script 後，可以用`echo $?`查看 exit code
+
+```sh
+./script.sh
+echo $?
+```
+
+結果如下：
+
+```sh
+$ Is everything alright? (y/n) y
+Good to hear!
+$ echo $?
+0
+```
+
+### 自制有 error message 的 grep
+
+**`script.sh`:**
+
+```sh
+#!/bin/bash
+grep -i "$1" $2"
+if [ $? != 0 ]
+then
+	echo "The word $1 is not found in the file $2"
+	exit 99
+fi
+```
+
+`!=` 代表 not equal，也可以用`-ne`
+
+試執行：
+
+```sh
+./script.sh "hello" "file.txt"
+The word hello is not found in the file file.txt
+```
+
+### 檢查檔案是否存在和可讀
+
+| 代號 | 意義                                    |
+| ---- | --------------------------------------- |
+| -f   | file exists                             |
+| -d   | directory exists                        |
+| -e   | file or directory exists                |
+| -s   | file exists and not empty (s 代表 size) |
+| -r   | file exists and readable                |
+
+```sh
+#!/bin/bash
+if [ -f $1 ]
+then
+	echo "The file $1 exists"
+else
+	echo "The file $1 does not exist"
+    touch $1
+    echo "The file $1 has been created"
+fi
+```
+
+### 在 script 裡執行指令
+
+用`$()`來執行指令
+
+```sh
+#!/bin/bash
+echo "The current date and time is $(date)"
+```
+
+### 在 script 裡運算
+
+用雙括號`$(( ))`來運算
+
+```sh
+#!/bin/bash
+result=$(($1 + $2))
+echo "The result is $result"
+```
+
+試執行：
+
+```sh
+$ ./script.sh 5 3
+The result is 8
+```
+
+另一例子﹐運算不會跳出錯誤訊息，直接忽視：
+
+```sh
+$ ./script.sh 5 ops
+The result is 5
+```
+
+## Loop
+
+### for loop
+
+```sh
+#!/bin/bash
+echo "The loop is now starting"
+for i in 1 2 3 4 5
+do
+	echo "The number is $i"
+done
+```
