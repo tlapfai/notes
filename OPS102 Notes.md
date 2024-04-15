@@ -47,14 +47,15 @@ Mon Mar  8 17:10:00 EST 2021
 ```bash
 ls -l # -l=long view
 ls -a # = all  -a -l OR -al OR -la 效果相同
-ls {file_name} # 只印出完全符合檔名的檔案
-ls {file_name}* # 用wildcard character for any number of characters
-ls {file_name}? # match one character
+ls 檔名 # 只印出完全符合檔名的檔案
+ls 檔名* # 用wildcard character for any number of characters
+ls 檔名? # match one character
 ls [AbC] # match any one inside the bracket
 ls [C-Y] # provide a range of alphabets，通常是a-z
 ls [0-9]
 ls [a-zA-Z0-9]
 ls [!ABC] # exclude A B or C
+ls [^ABC] # exclude A B or C
 ```
 
 ## Manual (man)
@@ -89,7 +90,7 @@ Result: WHAT -bash means not running any program
 | Command                           | Description                            |
 | --------------------------------- | -------------------------------------- |
 | `cp source_file destination_file` | (copy file)                            |
-| `cp -r`                           | copy recursively a nonempty directory  |
+| `cp -r directory1 directory2`     | copy recursively a nonempty directory  |
 | `mv source_file destination_file` | move file                              |
 | `tree -C`                         | draw directory tree with colour        |
 | `mkdir 目錄名`                    |
@@ -104,8 +105,8 @@ use slash to access absolute path, e.g. cd /home/users/
 檔名要符合 regular expression
 
 ```bash
-$ find 路徑 - name "要尋找的檔名"
-$ find 路徑 - iname "要尋找的檔名" # case insensitive
+$ find 路徑 -name "要尋找的檔名"
+$ find 路徑 -iname "要尋找的檔名" # case insensitive
 ```
 
 例：
@@ -570,7 +571,7 @@ lrwxrwxrwx 1 john users  5 Mar 11 17:01 file4 -> /root/file3
 - Variable name cannot start with number
 - 變數名稱開頭不用加`$`，但是在使用時要加$，例：`$school`
 
-```sh
+```
 $ school=Seneca  # assign Seneca to 變數school 不能有空格
 $ echo $school  # $代表是variable
 Seneca
@@ -794,7 +795,7 @@ $ echo $?
 
 ```bash
 #!/bin/bash
-grep -i "$1" $2"
+grep -i "$1" "$2"
 if [ $? != 0 ]
 then
 	echo "The word $1 is not found in the file $2"
@@ -994,7 +995,7 @@ done
 low=$1
 high=$2
 range=$(( $high - $low + 1 ))
-secretNumber=$(( $low + RANDOM%range ))
+secretNumber=$(( $low + $RANDOM%range ))
 counter=1
 while true
 do
@@ -1025,7 +1026,7 @@ low=$(echo $1 | cut -d"-" -f1)
 high=$(echo $1 | cut -d"-" -f2)
 ```
 
-### `awk`
+## `awk`
 
 - 代表 Aho, Weinberger, Kernighan
 - 用途：用來處理文字檔案，能做出類似`cut`的功能
@@ -1074,21 +1075,40 @@ $ awk '{print NR, $2, $5}' cars.txt
 $ awk 'NR == 1' cars.txt
 ```
 
+- `NR == 1`中間的空格可以省略
+
 | 語法                  | 意義                        | 例子                                              |
 | --------------------- | --------------------------- | ------------------------------------------------- |
-| NR == 5, NR == 10     | 第五行**至**第十行          | `awk 'NR == 5, NR == 10' {print $1} cars.txt`     |
-| NR == 5 \|\| NR == 10 | 第五行**或**第十行          | `awk 'NR == 5 \|\| NR == 10' {print $1} cars.txt` |
+| NR == 5, NR == 10     | 第五行**至**第十行          | `awk 'NR == 5, NR == 10 {print $1}' cars.txt`     |
+| NR == 5 \|\| NR == 10 | 第五行**或**第十行          | `awk 'NR == 5 \|\| NR == 10 {print $1}' cars.txt` |
 | $2 == 22000           | 第二欄等於 22000            | `awk '$2 == 22000' cars.txt`                      |
 | $2 < 6000             | 第二欄小於 6000             | `awk '$2 < 6000' cars.txt`                        |
 | /Honda/               | 包含 Honda 的行             | `awk '/Honda/' cars.txt`                          |
 | /Honda/ {print $2}    | 包含 Honda 的行，印出第二欄 | `awk '/Honda/ {print $2}' cars.txt`               |
 
-ULI101
+- 參考 ULI101 課程投影片
 
 ### Quiz Review
 
 ```
 city="North York"
+```
+
+### `env`
+
+- 顯示環境變數
+
+### `set`
+
+- 顯示所有變數
+
+### `export`
+
+- 自訂變數轉成環境變數
+
+```
+$ studentid=12345
+$ export studentid # 把 studentid 變成環墋變數
 ```
 
 # Transfer Files
